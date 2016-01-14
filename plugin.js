@@ -43,6 +43,7 @@
 	var Menu = exports.tinymce.ui.Menu;
 	var DOMUtils = exports.tinymce.dom.DOMUtils;
 	var JSONRequest = exports.tinymce.util.JSONRequest;
+	var allWordsArray = [];
 	//This is where we create the typos array globally
 	var currentTyposArray = [];
 	function nanospellbase() {
@@ -113,6 +114,7 @@
 				}
 			}
 			var matches = fullTextContext.match(wordTokenizer())
+			allWordsArray = matches;
 			var uniqueWords = [];
 			var words = [];
 			if(!matches){return words;}
@@ -141,8 +143,7 @@
 			for (var i = 0; i < allTextNodes.length; i++) {
 				MarkTypos(allTextNodes[i]);
 				// This is the moment where we inject our code
-				var cleanText = editor.getContent({format : 'text'});
-				errorTreshold(currentTyposArray.length, cleanText.length);
+				errorTreshold(currentTyposArray.length, allWordsArray.length);
 			}
 		}
 		function MarkTypos(textNode) {
