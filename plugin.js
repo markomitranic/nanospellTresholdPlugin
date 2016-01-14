@@ -777,13 +777,14 @@
 				}
 			}
 			function appendTypoMessage(status) {
+				var currentPercent = Math.round(status[1]);
 				if (status[0] === false) {
-					document.getElementById("typo-rating").innerHTML = Math.round(status[1]) + "% spell error rate. Submit blocked. (max. allowed is 20%)";
-					document.getElementById("typo-rating").style.color = "red";
+					var messageColor = "red";
 				} else {
-					document.getElementById("typo-rating").innerHTML = Math.round(status[1]) + "% spell error rate. Submit allowed.";
-					document.getElementById("typo-rating").style.color = "green";
+					var messageColor = "green";
 				}
+				document.getElementById("typo-rating").innerHTML = currentPercent + "% spell error rate. Submit blocked. (max. allowed is 20%)";
+				document.getElementById("typo-rating").style.color = messageColor;
 			}
 		}
 	});
