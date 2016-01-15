@@ -757,11 +757,24 @@
 		//ERROR TRESHOLD PLUGIN!
 
 		function errorTreshold(numberOfTypos, numberOfWords) {
-			messageContainerAppend();//create div
-			var isPostAllowed = calculateTreshold(numberOfTypos, numberOfWords); //calc the treshold
-			appendTypoMessage(isPostAllowed); //Add the message, send the status
-			//if ok allow submit
+		//Steps that happen only the first time
+			//Get the submit button
+			var submitButton = $('form button[type="submit"]');
+			//Append a blank message div Div
+			messageContainerAppend();
+			//Get the messagebox
+			var messageBox = $('#typo-rating');
 
+		//Steps that happen every other time
+			//Calculate Treshold
+			var isPostAllowed = calculateTreshold(numberOfTypos, numberOfWords);
+			//Add the message, send the status
+			appendMessage(isPostAllowed); 
+			//Check if ok and allow od disable submit button
+			blockSubmit(isPostAllowed);
+
+
+		//All functions
 			function messageContainerAppend() {
 				var node = document.createElement("div");
 				node.setAttribute("id", "typo-rating");
@@ -777,15 +790,23 @@
 					return [true, currentTreshold];
 				}
 			}
-			function appendTypoMessage(status) {
+			function appendMessage(status) {
 				var currentPercent = Math.round(status[1]);
 				if (status[0] === false) {
 					var messageColor = "red";
+					var newMessage = currentPercent + "% spell error rate. Submit blocked. (max. allowed is 20%)"
 				} else {
 					var messageColor = "green";
+					var newMessage = currentPercent + "% spell error rate. Submit allowed. (max. allowed is 20%)"
 				}
-				document.getElementById("typo-rating").innerHTML = currentPercent + "% spell error rate. Submit blocked. (max. allowed is 20%)";
-				document.getElementById("typo-rating").style.color = messageColor;
+				messageBox.text(newMessage).css('color', messageColor);
+			}
+			function blockSubmit(status) {
+				if (status[0] === false) {
+					submitButton.attr('disabled', 'disabled');
+				} else {
+					submitButton.removeAttr('disabled');
+				}
 			}
 		}
 	});

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
   <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
   <script>
   tinymce.init({
@@ -9,9 +10,15 @@
 	nanospell_server: "php",
 	nanospell_dictionary: "en",
   });
+
+  // $('body').css('background-color', 'red');
+
   </script>
 </head>
 <body>
+<form action="#">
   <textarea>Easy (and free!) Yodsau should check out our premium features.</textarea>
+  <button type="submit" disabled>SUBMIT ME!</button>
+</form>
 </body>
 </html>
