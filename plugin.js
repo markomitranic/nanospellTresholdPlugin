@@ -759,7 +759,7 @@
 				suggestionsMenu = null;
 			}
 		});
-		
+
 
 		//ERROR TRESHOLD PLUGIN!
 		var errorTresholdPlugin = {
@@ -785,7 +785,7 @@
 			calc: function(numberOfTypos, numberOfWords) {
 				//Prepare divs only if this is the first loop
 				if (this.isFirstTime === false) {
-					
+					//Skip the initialisation if this is not the first loop
 				} else {
 					errorTresholdPlugin.init();
 				}
