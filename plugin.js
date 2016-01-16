@@ -44,8 +44,11 @@
 	var DOMUtils = exports.tinymce.dom.DOMUtils;
 	var JSONRequest = exports.tinymce.util.JSONRequest;
 	var allWordsArray = [];
+
 	//This is where we create the typos array globally
 	var currentTyposArray = [];
+	//This is where we create the typos array globally
+
 	function nanospellbase() {
 		/*verbose but aparently nessicary method to extract this plugin's diretory url before instantiation*/
 		var scripts = document.getElementsByTagName('script');
@@ -143,7 +146,7 @@
 			for (var i = 0; i < allTextNodes.length; i++) {
 				MarkTypos(allTextNodes[i]);
 				// This is the moment where we inject our code
-				errorTreshold(currentTyposArray.length, allWordsArray.length);
+				errorTresholdPlugin.calc(currentTyposArray.length, allWordsArray.length);
 			}
 		}
 		function MarkTypos(textNode) {
@@ -153,8 +156,11 @@
 			var match
 			var caretpos = -1
 			var newNodes = [textNode];
+
 			//This is where we reset the typos array before every loop
 			currentTyposArray = [];
+			//This is where we reset the typos array before every loop
+
 			while ((match = regex.exec(currentNode.data)) != null) {
 				var matchtext = match[0];
 				if (!validWordToken(matchtext)) {
@@ -163,8 +169,11 @@
 				if (typeof(suggestionscache[cleanQuotes(matchtext)]) !== 'object') {
 					continue;
 				}
+
 				// This is where we read the typo value and add it to array
 				currentTyposArray.push(matchtext);
+				// This is where we read the typo value and add it to array
+
 				var pos = match.index
 				var matchlength = matchtext.length
 				var matchlength = matchtext.length
@@ -752,45 +761,49 @@
 		});
 
 
+		var errorTresholdPlugin = {
+			submitButton: '',
+			messageBox: '',
+			isFirstTime: true,
+			isPostAllowed: [],
+			treshold: 20,
 
-
-		//ERROR TRESHOLD PLUGIN!
-
-		function errorTreshold(numberOfTypos, numberOfWords) {
-		//Steps that happen only the first time
-			//Get the submit button
-			var submitButton = $('form button[type="submit"]');
-			//Append a blank message div Div
-			messageContainerAppend();
-			//Get the messagebox
-			var messageBox = $('#typo-rating');
-
-		//Steps that happen every other time
-			//Calculate Treshold
-			var isPostAllowed = calculateTreshold(numberOfTypos, numberOfWords);
-			//Add the message, send the status
-			appendMessage(isPostAllowed); 
-			//Check if ok and allow od disable submit button
-			blockSubmit(isPostAllowed);
-
-
-		//All functions
-			function messageContainerAppend() {
-				var node = document.createElement("div");
-				node.setAttribute("id", "typo-rating");
-				node.setAttribute("style","margin: 2px 0 2px 2px; padding: 8px; color: red; font-size: 10px;");
-				document.getElementById("mceu_29-body").appendChild(node);
-			}
-			function calculateTreshold(typos, words) {
-				var treshold = 20;
-				var currentTreshold = (typos / words) * 100 ;
-				if (currentTreshold > treshold) {
-					return [false, currentTreshold];
+			echo: function() {
+				console.log(errorTresholdPlugin);
+			},
+			init: function() {
+				//Get the submit button
+				this.submitButton = $('form button[type="submit"]');
+				//Append a blank message div Div
+				$('#mceu_29-body').append( '<div id="typo-rating" style="margin: 2px 0 2px 2px; padding: 8px; color: red; font-size: 10px;"></div>' );
+				//Get the messagebox
+				this.messageBox = $('#typo-rating');
+				//Mark it as done
+				this.isFirstTime = false;
+			},
+			calc: function(numberOfTypos, numberOfWords) {
+				//Prepare divs only if this is the first loop
+				if (this.isFirstTime === false) {
+					
 				} else {
-					return [true, currentTreshold];
+					errorTresholdPlugin.init();
 				}
-			}
-			function appendMessage(status) {
+				//Calculate Treshold
+				this.isPostAllowed = this.calculateTreshold(numberOfTypos, numberOfWords);
+				//Add the message, send the status
+				this.appendMessage(this.isPostAllowed); 
+				//Check if ok and allow od disable submit button
+				this.blockSubmit(this.isPostAllowed);
+			},
+			calculateTreshold: function(typos, words) {
+				var currentTresholdRatio = (typos / words) * 100 ;
+				if (currentTresholdRatio > this.treshold) {
+					return [false, currentTresholdRatio];
+				} else {
+					return [true, currentTresholdRatio];
+				}
+			},
+			appendMessage: function(status) {
 				var currentPercent = Math.round(status[1]);
 				if (status[0] === false) {
 					var messageColor = "red";
@@ -799,15 +812,17 @@
 					var messageColor = "green";
 					var newMessage = currentPercent + "% spell error rate. Submit allowed. (max. allowed is 20%)"
 				}
-				messageBox.text(newMessage).css('color', messageColor);
-			}
-			function blockSubmit(status) {
+				this.messageBox.text(newMessage).css('color', messageColor);
+			},
+			blockSubmit: function(status) {
 				if (status[0] === false) {
-					submitButton.attr('disabled', 'disabled');
+					this.submitButton.attr('disabled', 'disabled');
 				} else {
-					submitButton.removeAttr('disabled');
+					this.submitButton.removeAttr('disabled');
 				}
 			}
 		}
+		//ERROR TRESHOLD PLUGIN!
+
 	});
 })(this);
