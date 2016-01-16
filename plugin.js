@@ -759,8 +759,9 @@
 				suggestionsMenu = null;
 			}
 		});
+		
 
-
+		//ERROR TRESHOLD PLUGIN!
 		var errorTresholdPlugin = {
 			submitButton: '',
 			messageBox: '',
@@ -822,7 +823,7 @@
 				}
 			}
 		}
-		//ERROR TRESHOLD PLUGIN!
+
 
 	});
 })(this);
