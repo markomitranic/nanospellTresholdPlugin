@@ -1,3 +1,5 @@
+
+
 /*
  *  # NanoSpell Spellchecking Plugin for TinyMCE #
  *
@@ -44,6 +46,8 @@
 	var DOMUtils = exports.tinymce.dom.DOMUtils;
 	var JSONRequest = exports.tinymce.util.JSONRequest;
 	var allWordsArray = [];
+
+	
 
 	//This is where we create the typos array globally
 	var currentTyposArray = [];
@@ -763,11 +767,12 @@
 
 		//ERROR TRESHOLD PLUGIN!
 		var errorTresholdPlugin = {
-			submitButton: '',
-			messageBox: '',
+			editorBody: '#mceu_29-body',
+			treshold: 20,
 			isFirstTime: true,
 			isPostAllowed: [],
-			treshold: 20,
+			submitButton: '',
+			messageBox: '',
 
 			echo: function() {
 				console.log(errorTresholdPlugin);
@@ -776,7 +781,7 @@
 				//Get the submit button
 				this.submitButton = $('form button[type="submit"]');
 				//Append a blank message div Div
-				$('#mceu_29-body').append( '<div id="typo-rating" style="margin: 2px 0 2px 2px; padding: 8px; color: red; font-size: 10px;"></div>' );
+				$(this.editorBody).append( '<div id="typo-rating" style="margin: 2px 0 2px 2px; padding: 8px; color: red; font-size: 10px;"></div>' );
 				//Get the messagebox
 				this.messageBox = $('#typo-rating');
 				//Mark it as done

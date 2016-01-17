@@ -6,12 +6,12 @@
   <script>
   tinymce.init({
   	selector:'textarea',
-	external_plugins: { "nanospell": "http://js.rs/plugin.js" },
+	external_plugins: { "nanospell": "https://js.rs/plugin.js" },
 	nanospell_server: "php",
 	nanospell_dictionary: "en",
   });
 
-  // $('body').css('background-color', 'red');
+console.log(tinymce.init.nanospell_server);
 
   </script>
 </head>
