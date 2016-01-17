@@ -769,9 +769,6 @@
 			isPostAllowed: [],
 			treshold: 20,
 
-			echo: function() {
-				console.log(errorTresholdPlugin);
-			},
 			init: function() {
 				//Get the submit button
 				this.submitButton = $('form button[type="submit"]');
