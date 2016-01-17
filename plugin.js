@@ -734,6 +734,7 @@
 			text: 'Spellcheck As You Type',
 			context: 'tools',
 			onclick: toggleActive,
+			style: 'display:none;',
 			selectable: true,
 			active: started,
 			onPostRender: function() {
