@@ -730,6 +730,7 @@
 		});
 		editor.addMenuItem('nanospell', {
 			text: 'Spellcheck As You Type',
+			display: none;
 			context: 'tools',
 			onclick: toggleActive,
 			selectable: true,
