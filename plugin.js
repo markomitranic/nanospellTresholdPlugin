@@ -464,6 +464,7 @@
 				}
 			}
 			function defaultTinyMceSpellAJAXRequest(method, words, render, daisychain) {
+
 				JSONRequest.sendRPC({
 					url: resolveAjaxHandler(),
 					method: method,
@@ -780,10 +781,13 @@
 				console.log(errorTresholdPlugin);
 			},
 			init: function() {
+				//Steal the editor elector from the tinyMCE instance
+				var editorSelector = editor.settings.selector;
+				this.editorBody = $(this.editorBody);
 				//Get the submit button
 				this.submitButton = $('form button[type="submit"]');
 				//Append a blank message div Div
-				$(this.editorBody).append( '<div id="typo-rating" style="margin: 2px 0 2px 2px; padding: 8px; color: red; font-size: 10px;"></div>' );
+				this.editorBody.append( '<div id="typo-rating" style="margin: 2px 0 2px 2px; padding: 8px; color: red; font-size: 10px;"></div>' );
 				//Get the messagebox
 				this.messageBox = $('#typo-rating');
 				//Mark it as done
