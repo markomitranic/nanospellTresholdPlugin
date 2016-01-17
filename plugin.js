@@ -115,8 +115,11 @@
 				}
 			}
 			var matches = fullTextContext.match(wordTokenizer())
+			
 			//This is where we steal sum word number
 			errorTresholdPlugin.allWordsArray = matches;
+			//This is where we steal sum word number
+
 			var uniqueWords = [];
 			var words = [];
 			if(!matches){return words;}
@@ -147,6 +150,7 @@
 				// This is the moment where we inject our code
 				errorTresholdPlugin.calc(errorTresholdPlugin.currentTyposArray.length, errorTresholdPlugin.allWordsArray.length);
 			}
+			//This is the moment we reset our errorcount, after the loop.
 			errorTresholdPlugin.currentTyposArray = [];
 		}
 		function MarkTypos(textNode) {
