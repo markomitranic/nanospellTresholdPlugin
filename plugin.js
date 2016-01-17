@@ -47,8 +47,6 @@
 	var JSONRequest = exports.tinymce.util.JSONRequest;
 	var allWordsArray = [];
 
-	
-
 	//This is where we create the typos array globally
 	var currentTyposArray = [];
 	//This is where we create the typos array globally
@@ -734,7 +732,6 @@
 		});
 		editor.addMenuItem('nanospell', {
 			text: 'Spellcheck As You Type',
-			display: none;
 			context: 'tools',
 			onclick: toggleActive,
 			selectable: true,
@@ -775,6 +772,9 @@
 			submitButton: '',
 			messageBox: '',
 
+			echo: function() {
+				console.log(errorTresholdPlugin);
+			},
 			init: function() {
 				//Get the submit button
 				this.submitButton = $('form button[type="submit"]');
@@ -787,10 +787,8 @@
 			},
 			calc: function(numberOfTypos, numberOfWords) {
 				//Prepare divs only if this is the first loop
-				if (this.isFirstTime === false) {
-					//Skip the initialisation if this is not the first loop
-				} else {
-					errorTresholdPlugin.init();
+				if (this.isFirstTime === true) {
+					errorTresholdPlugin.init(); //initialize divs
 				}
 				//Calculate Treshold
 				this.isPostAllowed = this.calculateTreshold(numberOfTypos, numberOfWords);
