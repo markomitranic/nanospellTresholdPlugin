@@ -774,9 +774,6 @@
 			submitButton: '',
 			messageBox: '',
 
-			echo: function() {
-				console.log(errorTresholdPlugin);
-			},
 			init: function() {
 				//Get the submit button
 				this.submitButton = $('form button[type="submit"]');
