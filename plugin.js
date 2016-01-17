@@ -147,11 +147,14 @@
 			var allTextNodes = FindTextNodes(body)
 			for (var i = 0; i < allTextNodes.length; i++) {
 				MarkTypos(allTextNodes[i]);
-				// This is the moment where we inject our code
-				errorTresholdPlugin.calc(errorTresholdPlugin.currentTyposArray.length, errorTresholdPlugin.allWordsArray.length);
+				//This is where we protect the function from being sent the undefined or null values if the editor is empty
+				if (errorTresholdPlugin.currentTyposNumber === null) { errorTresholdPlugin.currentTyposNumber = 0;}
+				if (errorTresholdPlugin.allWordsArray === null) { errorTresholdPlugin.allWordsArray = [0];}
+				//This is where we initiate the calculation method
+				errorTresholdPlugin.calc(errorTresholdPlugin.currentTyposNumber, errorTresholdPlugin.allWordsArray.length);
 			}
 			//This is the moment we reset our errorcount, after the loop.
-			errorTresholdPlugin.currentTyposArray = [];
+			errorTresholdPlugin.currentTyposNumber = 0;
 		}
 		function MarkTypos(textNode) {
 			var regex = wordTokenizer();
@@ -171,7 +174,7 @@
 				}
 
 				// This is where we read the typo value and add it to array
-				errorTresholdPlugin.currentTyposArray.push(matchtext);
+				errorTresholdPlugin.currentTyposNumber++;
 				// This is where we read the typo value and add it to array
 
 				var pos = match.index
@@ -764,14 +767,14 @@
 
 		//ERROR TRESHOLD PLUGIN!
 		var errorTresholdPlugin = {
-			editorBody: '#mceu_29-body',
-			treshold: 20,
+			editorBody: '#mceu_29-body', //ID of the ditor
+			treshold: 20, //Threshold percentage
 			isFirstTime: true,
 			isPostAllowed: [],
 			submitButton: '',
 			messageBox: '',
-			allWordsArray: [],
-			currentTyposArray: [],
+			allWordsArray: [0],
+			currentTyposNumber: 0,
 
 			echo: function() {
 				console.log(errorTresholdPlugin);
