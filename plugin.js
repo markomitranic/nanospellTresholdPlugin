@@ -45,11 +45,7 @@
 	var Menu = exports.tinymce.ui.Menu;
 	var DOMUtils = exports.tinymce.dom.DOMUtils;
 	var JSONRequest = exports.tinymce.util.JSONRequest;
-	var allWordsArray = [];
 
-	//This is where we create the typos array globally
-	var currentTyposArray = [];
-	//This is where we create the typos array globally
 
 	function nanospellbase() {
 		/*verbose but aparently nessicary method to extract this plugin's diretory url before instantiation*/
@@ -119,7 +115,8 @@
 				}
 			}
 			var matches = fullTextContext.match(wordTokenizer())
-			allWordsArray = matches;
+			//This is where we steal sum word number
+			errorTresholdPlugin.allWordsArray = matches;
 			var uniqueWords = [];
 			var words = [];
 			if(!matches){return words;}
@@ -148,8 +145,9 @@
 			for (var i = 0; i < allTextNodes.length; i++) {
 				MarkTypos(allTextNodes[i]);
 				// This is the moment where we inject our code
-				errorTresholdPlugin.calc(currentTyposArray.length, allWordsArray.length);
+				errorTresholdPlugin.calc(errorTresholdPlugin.currentTyposArray.length, errorTresholdPlugin.allWordsArray.length);
 			}
+			errorTresholdPlugin.currentTyposArray = [];
 		}
 		function MarkTypos(textNode) {
 			var regex = wordTokenizer();
@@ -158,10 +156,6 @@
 			var match
 			var caretpos = -1
 			var newNodes = [textNode];
-
-			//This is where we reset the typos array before every loop
-			currentTyposArray = [];
-			//This is where we reset the typos array before every loop
 
 			while ((match = regex.exec(currentNode.data)) != null) {
 				var matchtext = match[0];
@@ -173,7 +167,7 @@
 				}
 
 				// This is where we read the typo value and add it to array
-				currentTyposArray.push(matchtext);
+				errorTresholdPlugin.currentTyposArray.push(matchtext);
 				// This is where we read the typo value and add it to array
 
 				var pos = match.index
@@ -772,6 +766,8 @@
 			isPostAllowed: [],
 			submitButton: '',
 			messageBox: '',
+			allWordsArray: [],
+			currentTyposArray: [],
 
 			echo: function() {
 				console.log(errorTresholdPlugin);
